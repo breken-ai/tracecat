@@ -252,6 +252,8 @@ def deserialize_ndjson(x: str) -> list[dict[str, Any]]:
 
 def parse_csv(x: str) -> list[dict[str, Any]]:
     """Parse CSV string into list of objects."""
+    # Excel's "CSV UTF-8" starts with a BOM, which would stick to the first header.
+    x = x.removeprefix("\ufeff")
     return [dict(row) for row in csv.DictReader(x.splitlines())]
 
 

@@ -158,6 +158,16 @@ def test_deserialize_ndjson(input, expected):
     assert deserialize_ndjson(input) == expected
 
 
+def test_parse_csv_strips_utf8_bom() -> None:
+    """A CSV saved as "CSV UTF-8" by Excel starts with a BOM; it is not part of the header."""
+    from tracecat.expressions.functions import parse_csv
+
+    assert parse_csv("\ufeffname,ip\nalice,1.2.3.4\n") == [
+        {"name": "alice", "ip": "1.2.3.4"}
+    ]
+    assert parse_csv("name,ip\nalice,1.2.3.4\n") == [{"name": "alice", "ip": "1.2.3.4"}]
+
+
 @pytest.mark.parametrize(
     "input_val,expected",
     [
