@@ -33,7 +33,9 @@ from functools import lru_cache
 from ipaddress import AddressValueError
 
 # IP ADDRESS
-IPV4_REGEX = r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b"
+# The lookarounds reject four numbers taken out of a longer dotted run, such as
+# an OID (1.3.6.1.5.5.7.3.1) or a five-part version (1.2.3.4.5).
+IPV4_REGEX = r"(?<!\d\.)\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b(?!\.\d)"
 
 # Comprehensive IPv6 regex that covers:
 # 1. Full format: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
