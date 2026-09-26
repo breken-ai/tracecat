@@ -209,6 +209,10 @@ def test_base64_to_str(input_str: str, expected: str) -> None:
         ("SGVsbG8sIFdvcmxkIQ==", "Hello, World!"),
         ("", ""),
         ("U3BlY2lhbCBjaGFyczogIUAjJCVeJiooKQ==", "Special chars: !@#$%^&*()"),
+        # Unpadded base64url (JWT segments, VirusTotal URL identifiers)
+        ("SGVsbG8sIFdvcmxkIQ", "Hello, World!"),
+        ("eyJzdWIiOiIxMjM0In0", '{"sub":"1234"}'),
+        ("aHR0cDovL2V4YW1wbGUuY29tLz9hPT4-", "http://example.com/?a=>>"),
     ],
 )
 def test_b64url_to_str(input_str: str, expected: str) -> None:

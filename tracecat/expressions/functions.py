@@ -176,7 +176,9 @@ def str_to_b64url(x: str) -> str:
 
 def b64url_to_str(x: str) -> str:
     """Decode URL-safe base64 string to string."""
-    return base64.urlsafe_b64decode(x.encode("utf-8")).decode()
+    # base64url is often sent without "=" padding (JWTs, VirusTotal URL IDs).
+    padded = x + "=" * (-len(x) % 4)
+    return base64.urlsafe_b64decode(padded.encode("utf-8")).decode()
 
 
 # Hash functions
