@@ -244,7 +244,9 @@ def generate_uuid() -> str:
 
 def deserialize_ndjson(x: str) -> list[dict[str, Any]]:
     """Parse newline-delimited JSON string into list of objects."""
-    return [orjson.loads(line) for line in x.splitlines()]
+    # Split on "\n" only: str.splitlines() also breaks on U+2028, U+2029 and
+    # U+0085, which JSON allows unescaped inside strings. Blank lines are skipped.
+    return [orjson.loads(line) for line in x.split("\n") if line.strip()]
 
 
 # I/O functions

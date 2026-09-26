@@ -152,6 +152,12 @@ def test_add_suffix(
         ('{"key": "value"}\n', [{"key": "value"}]),
         ('{"key": "value"}', [{"key": "value"}]),
         ('{"key": "value"}\n{"key": "value"}', [{"key": "value"}, {"key": "value"}]),
+        # U+2028, U+2029 and U+0085 are legal unescaped inside JSON strings
+        # (orjson and JSON.stringify emit them raw), so they must not split lines.
+        ('{"msg": "a\u2028b"}\n{"msg": "c"}\n', [{"msg": "a\u2028b"}, {"msg": "c"}]),
+        ('{"msg": "a\u2029b\u0085c"}\n', [{"msg": "a\u2029b\u0085c"}]),
+        ('{"key": 1}\r\n{"key": 2}\r\n', [{"key": 1}, {"key": 2}]),
+        ('{"key": 1}\n\n{"key": 2}\n\n', [{"key": 1}, {"key": 2}]),
     ],
 )
 def test_deserialize_ndjson(input, expected):
