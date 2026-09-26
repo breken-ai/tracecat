@@ -76,3 +76,9 @@
 - id: json_with_various_protocols
   text: "JSON with various protocols: {'endpoints': {'ftp': 'ftp://storage.example.com:21', 'streaming': 'tcp://stream.example.org:1234'}}"
   expected: ["ftp://storage.example.com:21", "tcp://stream.example.org:1234"]
+- id: url_followed_by_unicode_space_or_quote
+  text: "Click “https://example.com/login” or https://example.org/a now or https://example.net/b… later"
+  expected: ["https://example.com/login", "https://example.org/a", "https://example.net/b"]
+- id: url_with_non_ascii_path
+  text: "IDN page https://example.com/café/ü and https://пример.рф/путь"
+  expected: ["https://example.com/café/ü", "https://пример.рф/путь"]

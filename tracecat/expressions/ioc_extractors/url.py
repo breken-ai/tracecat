@@ -21,11 +21,14 @@ import re
 from pydantic import AnyHttpUrl, AnyUrl, TypeAdapter, ValidationError
 
 # URL regexes
+# Non-ASCII characters are allowed for IDNs and IRIs, except no-break spaces,
+# general punctuation (U+2000-U+206F: typographic spaces, curly quotes, "..."),
+# ideographic space/comma/full stop and U+FEFF, which end a URL in prose.
 # Match only HTTP and HTTPS URLs
-HTTP_URL_REGEX = r"(?:https?):\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=\u00A0-\uFFFF]{1,256}(?:\.[a-zA-Z0-9()\u00A0-\uFFFF]{1,63})+(?::\d{1,5})?(?:\/[-a-zA-Z0-9()@:%_\+.~#?&\/=\u00A0-\uFFFF]*)?(?<![?&=/#.])"
+HTTP_URL_REGEX = r"(?:https?):\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=\u00A1-\u1FFF\u2070-\u2FFF\u3003-\uFEFE\uFF00-\uFFFF]{1,256}(?:\.[a-zA-Z0-9()\u00A1-\u1FFF\u2070-\u2FFF\u3003-\uFEFE\uFF00-\uFFFF]{1,63})+(?::\d{1,5})?(?:\/[-a-zA-Z0-9()@:%_\+.~#?&\/=\u00A1-\u1FFF\u2070-\u2FFF\u3003-\uFEFE\uFF00-\uFFFF]*)?(?<![?&=/#.])"
 
 # Match URLs with all supported protocols (http, https, tcp, udp, ftp, sftp, ftps)
-URL_REGEX = r"(?:https?|tcp|udp|ftp|sftp|ftps):\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=\u00A0-\uFFFF]{1,256}(?:\.[a-zA-Z0-9()\u00A0-\uFFFF]{1,63})+(?::\d{1,5})?(?:\/[-a-zA-Z0-9()@:%_\+.~#?&\/=\u00A0-\uFFFF]*)?(?<![?&=/#.])"
+URL_REGEX = r"(?:https?|tcp|udp|ftp|sftp|ftps):\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=\u00A1-\u1FFF\u2070-\u2FFF\u3003-\uFEFE\uFF00-\uFFFF]{1,256}(?:\.[a-zA-Z0-9()\u00A1-\u1FFF\u2070-\u2FFF\u3003-\uFEFE\uFF00-\uFFFF]{1,63})+(?::\d{1,5})?(?:\/[-a-zA-Z0-9()@:%_\+.~#?&\/=\u00A1-\u1FFF\u2070-\u2FFF\u3003-\uFEFE\uFF00-\uFFFF]*)?(?<![?&=/#.])"
 
 
 # URL type adapters

@@ -25,3 +25,6 @@
 - id: urls_in_html
   text: "URLs in HTML: <a href='https://example.com'>Link</a> and <a href='ftp://files.example.org'>Files</a>"
   expected: ["https://example.com"]
+- id: url_before_non_breaking_space
+  text: "Phishing link: https://login-example.com/verify Please act now"
+  expected: ["https://login-example.com/verify"]
