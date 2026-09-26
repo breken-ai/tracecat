@@ -215,6 +215,18 @@ class TestHTML:
         # Empty cells should be represented with empty td tags
         assert "<td></td>" in result, "Expected empty cell representation in result"
 
+    def test_null_values(self):
+        """Null values render as empty cells, like missing keys and the other formats."""
+        result = _format_html([{"name": "Alice", "city": None}])
+        assert "None" not in result, f"Null rendered as 'None':\n{result}"
+        assert "<td></td>" in result
+        assert "<td>Alice</td>" in result
+
+    def test_falsy_values_are_kept(self):
+        result = _format_html([{"count": 0, "ok": False}])
+        assert "<td>0</td>" in result
+        assert "<td>False</td>" in result
+
 
 # CSV format tests
 class TestCSV:
