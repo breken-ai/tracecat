@@ -52,6 +52,17 @@ def is_http_url(url: str) -> bool:
         return False
 
 
+def _strip_unbalanced_closing_parens(url: str) -> str:
+    """Drop trailing ")" that close a parenthesis opened before the URL.
+
+    The URL pattern allows parentheses (e.g. `/wiki/Mars_(planet)`), so a URL
+    written inside parentheses or a Markdown link would keep the closing ")".
+    """
+    while url.endswith(")") and url.count(")") > url.count("("):
+        url = url[:-1]
+    return url
+
+
 def extract_urls(
     text: str, http_only: bool = False, include_defanged: bool = False
 ) -> list[str]:
@@ -100,5 +111,6 @@ def extract_urls(
         matched_normalized_urls = re.findall(_regex_pattern, normalized_text)
         matched_urls.extend(matched_normalized_urls)
 
+    matched_urls = [_strip_unbalanced_closing_parens(url) for url in matched_urls]
     unique_urls = list({url for url in matched_urls if _is_url(url)})
     return unique_urls

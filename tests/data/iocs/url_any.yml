@@ -76,3 +76,9 @@
 - id: json_with_various_protocols
   text: "JSON with various protocols: {'endpoints': {'ftp': 'ftp://storage.example.com:21', 'streaming': 'tcp://stream.example.org:1234'}}"
   expected: ["ftp://storage.example.com:21", "tcp://stream.example.org:1234"]
+- id: url_in_markdown_link_or_parentheses
+  text: "See the [report](https://example.com/report) (mirror at http://example.org/a)."
+  expected: ["https://example.com/report", "http://example.org/a"]
+- id: url_with_balanced_parentheses
+  text: "Reference: https://en.wikipedia.org/wiki/Mars_(planet) and (https://example.com/a_(b))"
+  expected: ["https://en.wikipedia.org/wiki/Mars_(planet)", "https://example.com/a_(b)"]
